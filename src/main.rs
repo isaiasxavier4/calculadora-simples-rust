@@ -1,38 +1,100 @@
 use std::io;
 
 fn main() {
-   
+    menu_opcoes();
+}
+
+fn menu_opcoes() {
     //MENU COM OPÇÕES DA CALCULADORA...
-    println!("Calculadora em Rus!");
+    println!("Calculadora em Rust!");
     println!("1 - Soma");
     println!("2 - Subtração");
     println!("3 - Divisão");
 
-    //COMO TODO DADO RECEBIDO EM RUST É UMA STRING, PEGAMOS E COLOCAMOS
-    //NA VARIÁVEL OP DO TIPO STRING E VAZIA...
-    //A VARIÁVEL É MUTAVEL, OU SEJA PODE SOFRER AUTERAÇÃO NO VALOR...
-    let mut op = String::new(); 
+    //LEITURA DO VALOR INFORMADO PELO USUÁRIO
+    let mut op = String::new();
+    io::stdin()
+        .read_line(&mut op)
+        .expect("Erro ao ler a mensagem!");
+    let opcao: u8 = op
+        .trim()
+        .parse()
+        .expect("Por favor, digite um valor válido!");
 
-    //LER O DADO DIGITADO PELO USUÁRIO E VERIFICA SE ELE DIGITOU UM VALOR VÁLIDO..
-    io::stdin().read_line(&mut op).expect("Erro ao ler a mensagem!");
-    
-    //PASSA O DADO DE STRING PARA INTIERO...
-    //SE O USUÁRIO NÃO DIGITAR UM VALOR CORRETO É PEDIDO PARA 
-    //QUE COLOQUE UM VALOR VÁLIDO..
-    let opcao: u8 = op.trim().parse().expect("Por favor, digite um valor válido!");
-    
     //VERIFICA QUAL OPÇÃO O USUÁRIO ESCOLHEU E CHAVA A FUNÇÃO PARA COLETAR OS DADOS..
     match opcao {
-        1 => soma(),
-        2 => Subtracao(),
-        _=> print!("Digite uma das opções acima!"),
+        1 => coleta_dados(1),
+        2 => coleta_dados(2),
+        3 => coleta_dados(3),
+        _ => print!("Digite uma das opções acima!"),
     }
 }
 
-fn soma(){
-    print!("Você escolheu a opção SOMA!");
+fn coleta_dados(opcao: u8) {
+    use std::io::{self, Write};
+
+    print!("Informe o primeiro valor: ");
+    io::stdout().flush().unwrap();
+    let mut valor1 = String::new();
+    io::stdin()
+        .read_line(&mut valor1)
+        .expect("Erro ao ler o valor digitado!");
+    let primeiro_valor: f64 = valor1
+        .trim()
+        .parse()
+        .expect("Por favor digite um valor válido!");
+
+    print!("Informe o segundo valor: ");
+    io::stdout().flush().unwrap();
+    let mut valor2 = String::new();
+    io::stdin()
+        .read_line(&mut valor2)
+        .expect("Erro o ler o valor digitado!");
+    let segundo_valor: f64 = valor2
+        .trim()
+        .parse()
+        .expect("Por favor digite um valor válido!");
+
+    match opcao {
+        1 => println!(
+            "Soma de {} por {} = {}",
+            primeiro_valor,
+            segundo_valor,
+            soma(primeiro_valor, segundo_valor)
+        ),
+        2 => println!(
+            "Subtração de {} por {} = {}",
+            primeiro_valor,
+            segundo_valor,
+            subtracao(primeiro_valor, segundo_valor)
+        ),
+        3 => {
+            if segundo_valor == 0.0 { // VERIFICA SE O SEGUNDO VALOR É ZERO POIS NÃO PODEMOS DIVIDIR POR ZERO...
+                println!("Erro: divisão por zero!");
+            } else {
+                println!(
+                    "Dvisião de {} por {} = {}",
+                    primeiro_valor,
+                    segundo_valor,
+                    divisao(primeiro_valor, segundo_valor)
+                );
+            }
+        }
+        _ => println!("Opção incorreta!"),
+    }
 }
 
-fn Subtracao(){
-    print!("Você escolheu a opção SUBTRAÇÃO!");
+//FUNÇÃO SOMA...
+fn soma(primeiro_v: f64, segundo_v: f64) -> f64 {
+    primeiro_v + segundo_v
+}
+
+//FUNÇÃO DE SUBTRAÇÃO
+fn subtracao(primeiro_v: f64, segundo_v: f64) -> f64 {
+    primeiro_v - segundo_v
+}
+
+//FUNÇÃO DE DIVISÃO..
+fn divisao(primeiro_v: f64, segundo_v: f64) -> f64 {
+    primeiro_v / segundo_v
 }
