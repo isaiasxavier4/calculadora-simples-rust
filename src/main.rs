@@ -2,10 +2,12 @@ use core::num;
 use std::io;
 
 fn main() {
+    //CHAMA A FUNÇÃO MENU..
     menu_opcoes();
 }
 
 fn menu_opcoes() {
+    //INICIA O LOOP ATÉ QUE O USUÁRIO DIGITE ZERO PARA SAIR...
     loop {
         //MENU COM OPÇÕES DA CALCULADORA...
         println!("Calculadora em Rust!");
@@ -19,7 +21,10 @@ fn menu_opcoes() {
         io::stdin()
             .read_line(&mut op)
             .expect("Erro ao ler a mensagem!");
-
+        
+        //VERIFICAÇÃO DO DADO DIGITADO PELO USUÁRIO
+        //CASO O DADO NÃO SEJA UM VALOR DO TIPO INTEIRO(u8) ELE PEDE PARA QUE DIGITE
+        //UM NOVO VALOR..
         let opcao: u8 = match op.trim().parse() {
             Ok(num) => num,
             Err(_) => {
@@ -34,6 +39,8 @@ fn menu_opcoes() {
                 println!("Encerrando o programa. Até logo!");
                 break;
             }
+
+            //CASO O VALOR NÃO SEJA ZERO É CHAMADA A FUNÇÃO coleta_dados()...   
             1 => coleta_dados(1),
             2 => coleta_dados(2),
             3 => coleta_dados(3),
@@ -41,10 +48,11 @@ fn menu_opcoes() {
         }
     }
 }
-
+//FUNÇÃO coleta_dados(), NELA FEITA TODA A COLETA DE INFORMAÇÕES PARA A CALCULADORA..
 fn coleta_dados(opcao: u8) {
     use std::io::{self, Write};
 
+    //LER O PRIMEIRO VALOR...
     print!("Informe o primeiro valor: ");
     io::stdout().flush().unwrap();
     let mut valor1 = String::new();
@@ -55,7 +63,7 @@ fn coleta_dados(opcao: u8) {
         .trim()
         .parse()
         .expect("Por favor digite um valor válido!");
-
+    //LER O SEGUNDO VALOR...
     print!("Informe o segundo valor: ");
     io::stdout().flush().unwrap();
     let mut valor2 = String::new();
