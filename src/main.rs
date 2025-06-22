@@ -19,14 +19,20 @@ fn main() {
     //PASSA O DADO DE STRING PARA INTIERO...
     //SE O USUÁRIO NÃO DIGITAR UM VALOR CORRETO É PEDIDO PARA 
     //QUE COLOQUE UM VALOR VÁLIDO..
-    let opcao: i32 = op.trim().parse().expect("Por favor, digite um valor válido!");
+    let opcao: u8 = op.trim().parse().expect("Por favor, digite um valor válido!");
     
     //VERIFICA QUAL OPÇÃO O USUÁRIO ESCOLHEU E CHAVA A FUNÇÃO PARA COLETAR OS DADOS..
-    if opcao == 1 {
-        print!("Você escolheu a opção SOMA!");
-    }else if opcao == 2{
-        print!("Você escolheu a opção SUBTRAÇÃO!");
-    }else if opcao == 3 {
-        print!("Você escolheu a opção DIVISÃO!");
+    match opcao {
+        1 => soma(),
+        2 => Subtracao(),
+        _=> print!("Digite uma das opções acima!"),
     }
+}
+
+fn soma(){
+    print!("Você escolheu a opção SOMA!");
+}
+
+fn Subtracao(){
+    print!("Você escolheu a opção SUBTRAÇÃO!");
 }
