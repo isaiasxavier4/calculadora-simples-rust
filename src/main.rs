@@ -1,3 +1,4 @@
+use core::num;
 use std::io;
 
 fn main() {
@@ -5,28 +6,39 @@ fn main() {
 }
 
 fn menu_opcoes() {
-    //MENU COM OPÇÕES DA CALCULADORA...
-    println!("Calculadora em Rust!");
-    println!("1 - Soma");
-    println!("2 - Subtração");
-    println!("3 - Divisão");
+    loop {
+        //MENU COM OPÇÕES DA CALCULADORA...
+        println!("Calculadora em Rust!");
+        println!("1 - Soma");
+        println!("2 - Subtração");
+        println!("3 - Divisão");
+        println!("0 - Sair");
 
-    //LEITURA DO VALOR INFORMADO PELO USUÁRIO
-    let mut op = String::new();
-    io::stdin()
-        .read_line(&mut op)
-        .expect("Erro ao ler a mensagem!");
-    let opcao: u8 = op
-        .trim()
-        .parse()
-        .expect("Por favor, digite um valor válido!");
+        //LEITURA DO VALOR INFORMADO PELO USUÁRIO
+        let mut op = String::new();
+        io::stdin()
+            .read_line(&mut op)
+            .expect("Erro ao ler a mensagem!");
 
-    //VERIFICA QUAL OPÇÃO O USUÁRIO ESCOLHEU E CHAVA A FUNÇÃO PARA COLETAR OS DADOS..
-    match opcao {
-        1 => coleta_dados(1),
-        2 => coleta_dados(2),
-        3 => coleta_dados(3),
-        _ => print!("Digite uma das opções acima!"),
+        let opcao: u8 = match op.trim().parse() {
+            Ok(num) => num,
+            Err(_) => {
+                println!("Por favor, digite uma opção válida!");
+                continue;
+            }
+        };
+
+        //VERIFICA QUAL OPÇÃO O USUÁRIO ESCOLHEU E CHAVA A FUNÇÃO PARA COLETAR OS DADOS..
+        match opcao {
+            0 => {
+                println!("Encerrando o programa. Até logo!");
+                break;
+            }
+            1 => coleta_dados(1),
+            2 => coleta_dados(2),
+            3 => coleta_dados(3),
+            _ => print!("Digite uma das opções acima!"),
+        }
     }
 }
 
@@ -49,7 +61,7 @@ fn coleta_dados(opcao: u8) {
     let mut valor2 = String::new();
     io::stdin()
         .read_line(&mut valor2)
-        .expect("Erro o ler o valor digitado!");
+        .expect("Erro ao ler o valor digitado!");
     let segundo_valor: f64 = valor2
         .trim()
         .parse()
@@ -69,11 +81,12 @@ fn coleta_dados(opcao: u8) {
             subtracao(primeiro_valor, segundo_valor)
         ),
         3 => {
-            if segundo_valor == 0.0 { // VERIFICA SE O SEGUNDO VALOR É ZERO POIS NÃO PODEMOS DIVIDIR POR ZERO...
+            if segundo_valor == 0.0 {
+                // VERIFICA SE O SEGUNDO VALOR É ZERO POIS NÃO PODEMOS DIVIDIR POR ZERO...
                 println!("Erro: divisão por zero!");
             } else {
                 println!(
-                    "Dvisião de {} por {} = {}",
+                    "Divisão de {} por {} = {}",
                     primeiro_valor,
                     segundo_valor,
                     divisao(primeiro_valor, segundo_valor)
